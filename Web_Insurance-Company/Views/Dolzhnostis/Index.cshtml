@@ -1,13 +1,13 @@
 ﻿@model IEnumerable<Insurance_Company.Models.Dolzhnosti>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Должности — ";
 }
 
-<h1>Index</h1>
+<h1>Должности</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Создать</a>
 </p>
 <table class="table">
     <thead>
@@ -43,9 +43,9 @@
                 @Html.DisplayFor(modelItem => item.Trebovaniya)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.KodDolzhnosti">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.KodDolzhnosti">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.KodDolzhnosti">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.KodDolzhnosti">Редактировать</a> |
+                <a asp-action="Details" asp-route-id="@item.KodDolzhnosti">Детали</a> |
+                <a asp-action="Delete" asp-route-id="@item.KodDolzhnosti"><font color="FireBrick">Удалить</font></a>
             </td>
         </tr>
 }

@@ -1,28 +1,31 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Insurance_Company.Data;
 using Insurance_Company.Models;
 
 namespace Web_Insurance_Company.Controllers
 {
-    public class DolzhnostisController : Controller
+    public class RiskisController : Controller
     {
         private readonly InsuranceCompanyContext _context;
 
-        public DolzhnostisController(InsuranceCompanyContext context)
+        public RiskisController(InsuranceCompanyContext context)
         {
             _context = context;
         }
 
-        // GET: Dolzhnostis
+        // GET: Riskis
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Dolzhnosti.ToListAsync());
+            return View(await _context.Riski.ToListAsync());
         }
 
-        // GET: Dolzhnostis/Details/5
+        // GET: Riskis/Details/5
         public async Task<IActionResult> Details(long? id)
         {
             if (id == null)
@@ -30,39 +33,39 @@ namespace Web_Insurance_Company.Controllers
                 return NotFound();
             }
 
-            var dolzhnosti = await _context.Dolzhnosti
-                .FirstOrDefaultAsync(m => m.KodDolzhnosti == id);
-            if (dolzhnosti == null)
+            var riski = await _context.Riski
+                .FirstOrDefaultAsync(m => m.KodRiska == id);
+            if (riski == null)
             {
                 return NotFound();
             }
 
-            return View(dolzhnosti);
+            return View(riski);
         }
 
-        // GET: Dolzhnostis/Create
+        // GET: Riskis/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Dolzhnostis/Create
+        // POST: Riskis/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("KodDolzhnosti,NaimenovanieDolzhnosti,Oklad,Obyazannosti,Trebovaniya")] Dolzhnosti dolzhnosti)
+        public async Task<IActionResult> Create([Bind("KodRiska,Naimenovanie,Opisanie,SrednyayaVeroyatnost")] Riski riski)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(dolzhnosti);
+                _context.Add(riski);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(dolzhnosti);
+            return View(riski);
         }
 
-        // GET: Dolzhnostis/Edit/5
+        // GET: Riskis/Edit/5
         public async Task<IActionResult> Edit(long? id)
         {
             if (id == null)
@@ -70,22 +73,22 @@ namespace Web_Insurance_Company.Controllers
                 return NotFound();
             }
 
-            var dolzhnosti = await _context.Dolzhnosti.FindAsync(id);
-            if (dolzhnosti == null)
+            var riski = await _context.Riski.FindAsync(id);
+            if (riski == null)
             {
                 return NotFound();
             }
-            return View(dolzhnosti);
+            return View(riski);
         }
 
-        // POST: Dolzhnostis/Edit/5
+        // POST: Riskis/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(long id, [Bind("KodDolzhnosti,NaimenovanieDolzhnosti,Oklad,Obyazannosti,Trebovaniya")] Dolzhnosti dolzhnosti)
+        public async Task<IActionResult> Edit(long id, [Bind("KodRiska,Naimenovanie,Opisanie,SrednyayaVeroyatnost")] Riski riski)
         {
-            if (id != dolzhnosti.KodDolzhnosti)
+            if (id != riski.KodRiska)
             {
                 return NotFound();
             }
@@ -94,12 +97,12 @@ namespace Web_Insurance_Company.Controllers
             {
                 try
                 {
-                    _context.Update(dolzhnosti);
+                    _context.Update(riski);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!DolzhnostiExists(dolzhnosti.KodDolzhnosti))
+                    if (!RiskiExists(riski.KodRiska))
                     {
                         return NotFound();
                     }
@@ -110,10 +113,10 @@ namespace Web_Insurance_Company.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(dolzhnosti);
+            return View(riski);
         }
 
-        // GET: Dolzhnostis/Delete/5
+        // GET: Riskis/Delete/5
         public async Task<IActionResult> Delete(long? id)
         {
             if (id == null)
@@ -121,30 +124,30 @@ namespace Web_Insurance_Company.Controllers
                 return NotFound();
             }
 
-            var dolzhnosti = await _context.Dolzhnosti
-                .FirstOrDefaultAsync(m => m.KodDolzhnosti == id);
-            if (dolzhnosti == null)
+            var riski = await _context.Riski
+                .FirstOrDefaultAsync(m => m.KodRiska == id);
+            if (riski == null)
             {
                 return NotFound();
             }
 
-            return View(dolzhnosti);
+            return View(riski);
         }
 
-        // POST: Dolzhnostis/Delete/5
+        // POST: Riskis/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(long id)
         {
-            var dolzhnosti = await _context.Dolzhnosti.FindAsync(id);
-            _context.Dolzhnosti.Remove(dolzhnosti);
+            var riski = await _context.Riski.FindAsync(id);
+            _context.Riski.Remove(riski);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool DolzhnostiExists(long id)
+        private bool RiskiExists(long id)
         {
-            return _context.Dolzhnosti.Any(e => e.KodDolzhnosti == id);
+            return _context.Riski.Any(e => e.KodRiska == id);
         }
     }
 }

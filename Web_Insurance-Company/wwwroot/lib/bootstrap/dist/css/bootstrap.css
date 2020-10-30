@@ -414,9 +414,9 @@ h6, .h6 {
 }
 
 .display-4 {
-  font-size: 3.5rem;
-  font-weight: 300;
-  line-height: 1.2;
+    font-size: 3.5rem;
+    font-weight: 300;
+    line-height: 1.2;
 }
 
 hr {
@@ -9758,6 +9758,11 @@ button.bg-dark:focus {
 
 .text-center {
   text-align: center !important;
+}
+
+.ssilki {
+    font-size: 100px;
+    text-align: center !important;
 }
 
 @media (min-width: 576px) {

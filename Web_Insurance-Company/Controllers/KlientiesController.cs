@@ -1,28 +1,30 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Insurance_Company.Data;
 using Insurance_Company.Models;
 
 namespace Web_Insurance_Company.Controllers
 {
-    public class DolzhnostisController : Controller
+    public class KlientiesController : Controller
     {
         private readonly InsuranceCompanyContext _context;
 
-        public DolzhnostisController(InsuranceCompanyContext context)
+        public KlientiesController(InsuranceCompanyContext context)
         {
             _context = context;
         }
 
-        // GET: Dolzhnostis
+        // GET: Klienties
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Dolzhnosti.ToListAsync());
+            var insuranceCompanyContext = _context.Klienty.Include(k => k.KodGruppyNavigation);
+            return View(await insuranceCompanyContext.ToListAsync());
         }
 
-        // GET: Dolzhnostis/Details/5
+        // GET: Klienties/Details/5
         public async Task<IActionResult> Details(long? id)
         {
             if (id == null)
@@ -30,39 +32,42 @@ namespace Web_Insurance_Company.Controllers
                 return NotFound();
             }
 
-            var dolzhnosti = await _context.Dolzhnosti
-                .FirstOrDefaultAsync(m => m.KodDolzhnosti == id);
-            if (dolzhnosti == null)
+            var klienty = await _context.Klienty
+                .Include(k => k.KodGruppyNavigation)
+                .FirstOrDefaultAsync(m => m.KodKlienta == id);
+            if (klienty == null)
             {
                 return NotFound();
             }
 
-            return View(dolzhnosti);
+            return View(klienty);
         }
 
-        // GET: Dolzhnostis/Create
+        // GET: Klienties/Create
         public IActionResult Create()
         {
+            ViewData["KodGruppy"] = new SelectList(_context.GruppyKlientov, "KodGruppy", "Naimenovanie");
             return View();
         }
 
-        // POST: Dolzhnostis/Create
+        // POST: Klienties/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("KodDolzhnosti,NaimenovanieDolzhnosti,Oklad,Obyazannosti,Trebovaniya")] Dolzhnosti dolzhnosti)
+        public async Task<IActionResult> Create([Bind("KodKlienta,Fio,DataRozhdeniya,Pol,Adres,Telefon,PasportnyeDannye,KodGruppy")] Klienty klienty)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(dolzhnosti);
+                _context.Add(klienty);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(dolzhnosti);
+            ViewData["KodGruppy"] = new SelectList(_context.GruppyKlientov, "KodGruppy", "Naimenovanie", klienty.KodGruppy);
+            return View(klienty);
         }
 
-        // GET: Dolzhnostis/Edit/5
+        // GET: Klienties/Edit/5
         public async Task<IActionResult> Edit(long? id)
         {
             if (id == null)
@@ -70,22 +75,23 @@ namespace Web_Insurance_Company.Controllers
                 return NotFound();
             }
 
-            var dolzhnosti = await _context.Dolzhnosti.FindAsync(id);
-            if (dolzhnosti == null)
+            var klienty = await _context.Klienty.FindAsync(id);
+            if (klienty == null)
             {
                 return NotFound();
             }
-            return View(dolzhnosti);
+            ViewData["KodGruppy"] = new SelectList(_context.GruppyKlientov, "KodGruppy", "Naimenovanie", klienty.KodGruppy);
+            return View(klienty);
         }
 
-        // POST: Dolzhnostis/Edit/5
+        // POST: Klienties/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(long id, [Bind("KodDolzhnosti,NaimenovanieDolzhnosti,Oklad,Obyazannosti,Trebovaniya")] Dolzhnosti dolzhnosti)
+        public async Task<IActionResult> Edit(long id, [Bind("KodKlienta,Fio,DataRozhdeniya,Pol,Adres,Telefon,PasportnyeDannye,KodGruppy")] Klienty klienty)
         {
-            if (id != dolzhnosti.KodDolzhnosti)
+            if (id != klienty.KodKlienta)
             {
                 return NotFound();
             }
@@ -94,12 +100,12 @@ namespace Web_Insurance_Company.Controllers
             {
                 try
                 {
-                    _context.Update(dolzhnosti);
+                    _context.Update(klienty);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!DolzhnostiExists(dolzhnosti.KodDolzhnosti))
+                    if (!KlientyExists(klienty.KodKlienta))
                     {
                         return NotFound();
                     }
@@ -110,10 +116,11 @@ namespace Web_Insurance_Company.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(dolzhnosti);
+            ViewData["KodGruppy"] = new SelectList(_context.GruppyKlientov, "KodGruppy", "Naimenovanie", klienty.KodGruppy);
+            return View(klienty);
         }
 
-        // GET: Dolzhnostis/Delete/5
+        // GET: Klienties/Delete/5
         public async Task<IActionResult> Delete(long? id)
         {
             if (id == null)
@@ -121,30 +128,31 @@ namespace Web_Insurance_Company.Controllers
                 return NotFound();
             }
 
-            var dolzhnosti = await _context.Dolzhnosti
-                .FirstOrDefaultAsync(m => m.KodDolzhnosti == id);
-            if (dolzhnosti == null)
+            var klienty = await _context.Klienty
+                .Include(k => k.KodGruppyNavigation)
+                .FirstOrDefaultAsync(m => m.KodKlienta == id);
+            if (klienty == null)
             {
                 return NotFound();
             }
 
-            return View(dolzhnosti);
+            return View(klienty);
         }
 
-        // POST: Dolzhnostis/Delete/5
+        // POST: Klienties/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(long id)
         {
-            var dolzhnosti = await _context.Dolzhnosti.FindAsync(id);
-            _context.Dolzhnosti.Remove(dolzhnosti);
+            var klienty = await _context.Klienty.FindAsync(id);
+            _context.Klienty.Remove(klienty);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool DolzhnostiExists(long id)
+        private bool KlientyExists(long id)
         {
-            return _context.Dolzhnosti.Any(e => e.KodDolzhnosti == id);
+            return _context.Klienty.Any(e => e.KodKlienta == id);
         }
     }
 }
