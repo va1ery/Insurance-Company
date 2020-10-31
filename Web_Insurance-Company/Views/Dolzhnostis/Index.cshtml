@@ -42,8 +42,8 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Trebovaniya)
             </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.KodDolzhnosti">Редактировать</a> |
+            <td style="color: lightgray">
+                <a asp-action="Edit" asp-route-id="@item.KodDolzhnosti"><font color="green">Редактировать</a> |
                 <a asp-action="Details" asp-route-id="@item.KodDolzhnosti">Детали</a> |
                 <a asp-action="Delete" asp-route-id="@item.KodDolzhnosti"><font color="FireBrick">Удалить</font></a>
             </td>

@@ -36,8 +36,8 @@
             <td>
                 @Html.DisplayFor(modelItem => item.SrednyayaVeroyatnost)
             </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.KodRiska">Редактировать</a> |
+            <td style="color: lightgray">
+                <a asp-action="Edit" asp-route-id="@item.KodRiska"><font color="green">Редактировать</font></a> |
                 <a asp-action="Details" asp-route-id="@item.KodRiska">Детали</a> |
                 <a asp-action="Delete" asp-route-id="@item.KodRiska"><font color="FireBrick">Удалить</font></a>
             </td>
