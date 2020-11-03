@@ -1,9 +1,0 @@
-language: csharp
-solution: ./Insurance-Company.sln 
-dist: bionic
-mono: none
-dotnet: 3.1
-install: 
-    - dotnet restore
-script:
-    - dotnet build
